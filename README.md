@@ -8,7 +8,7 @@ The led matrix is indexed from the top left corner. The first two column is used
 
 As 4 bit (and led) is more than enough to represent a decimal digit, the first row is also unused.
 
-![](microbit_exp.svg)
+![](images/microbit_exp.svg)
 
 The code is written in [MicroPython](https://micropython.org/).
 
