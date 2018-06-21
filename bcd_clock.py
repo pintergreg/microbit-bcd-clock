@@ -18,6 +18,9 @@ def draw():
     display.show(Image(a))
 
 
+# draw initial state
+draw()
+
 while True:
     # this is an endless loop where all the computation happens
 
