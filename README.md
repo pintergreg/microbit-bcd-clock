@@ -16,6 +16,7 @@ The code is written in [MicroPython](https://micropython.org/).
 # Requirements
 
 - a micro:bit board
+- micro:bit MicroPython [documentation](https://microbit-micropython.readthedocs.io/en/latest/tutorials/introduction.html)
 - [uflash](https://pypi.python.org/pypi/uflash)
 
 # Install
