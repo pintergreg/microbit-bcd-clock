@@ -33,6 +33,7 @@ while True:
         needs_to_redraw = True
     if button_b.was_pressed():
         time += 0b0000000000000001
+        partials = 0
         needs_to_redraw = True
 
     # As the cycle is 200 ms so "partials" counting five times in a second
