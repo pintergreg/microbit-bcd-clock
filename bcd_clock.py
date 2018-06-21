@@ -42,7 +42,7 @@ while True:
         partials = 0
         needs_to_redraw = True
 
-    # increasing time variables
+    # increase digits in time variable
     if time & 0b0000000000001111 == 10:
         time = time & 0b1111111111110000
         time += 0b0000000000010000
@@ -56,9 +56,11 @@ while True:
        (time & 0b0000111100000000) >> 8 == 4:
         time = time & 0b0000000011111111
 
+    # redraw display if necessary
     if needs_to_redraw:
         draw()
 
+    # increase partials
     partials += 1
 
     # pause the cycle for 200 ms
