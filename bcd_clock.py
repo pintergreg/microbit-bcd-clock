@@ -20,13 +20,15 @@ def draw():
 
 while True:
     # this is an endless loop where all the computation happens
+    needs_to_redraw = False
 
-    draw()
     # stepper button handling
     if button_a.was_pressed():
         time += 0b0000000100000000
+        needs_to_redraw = True
     if button_b.was_pressed():
         time += 0b0000000000000001
+        needs_to_redraw = True
 
     if partials == 300:
         time += 0b0000000000000001
@@ -36,15 +38,22 @@ while True:
     if time & 0b0000000000001111 == 10:
         time = time & 0b1111111111110000
         time += 0b0000000000010000
+        needs_to_redraw = True
     if (time & 0b0000000011110000) >> 4 == 6:
         time = time & 0b1111111100001111
         time += 0b0000000100000000
+        needs_to_redraw = True
     if (time & 0b0000111100000000) >> 8 == 10:
         time = time & 0b1111000011111111
         time += 0b0001000000000000
+        needs_to_redraw = True
     if (time & 0b1111000000000000) >> 12 == 2 and\
        (time & 0b0000111100000000) >> 8 == 4:
         time = time & 0b0000000011111111
+        needs_to_redraw = True
+
+    if needs_to_redraw:
+        draw()
 
     partials += 1
 
