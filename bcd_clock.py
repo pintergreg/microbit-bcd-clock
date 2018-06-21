@@ -20,6 +20,8 @@ def draw():
 
 while True:
     # this is an endless loop where all the computation happens
+
+    # normally it is not required to reday the display in an iteration
     needs_to_redraw = False
 
     # stepper button handling
@@ -30,13 +32,13 @@ while True:
         time += 0b0000000000000001
         needs_to_redraw = True
 
+    # As the cycle is 200 ms so "partials" counting five times in a second
+    # therefore it has to count to 300 to step a minute.
     if partials == 300:
         time += 0b0000000000000001
         needs_to_redraw = True
 
     # increasing time variables
-    # N.B.: the cycle is 100 ms so "seconds" counting tenfold faster
-    # therefore it has to count to 600 instead of 60.
     if time & 0b0000000000001111 == 10:
         time = time & 0b1111111111110000
         time += 0b0000000000010000
