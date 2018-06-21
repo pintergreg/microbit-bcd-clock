@@ -9,10 +9,10 @@ seconds = 0
 def split_to_digits(n):
     """
     Splits a decimal number to two digits and returns it as a tuple.
-    N.B.: this function does not check whether the input is a 
+    N.B.: this function does not check whether the input is a
     two-digit decimal number.
     """
-    return n // 10, n % 10;
+    return n // 10, n % 10
 
 
 def to_binary(n):
@@ -36,13 +36,13 @@ def to_binary(n):
 def draw():
     """
     Sets the LEDs to draw the BCD digits.
-    
+
     It uses the four four-element array representing the binary number
-    and sets the LED brightness. It can be specified from 0 to 9, where 
-    0 means off the 9 is the brightest. 
-    Hour value is written to the column 0 and 1, 
+    and sets the LED brightness. It can be specified from 0 to 9, where
+    0 means off the 9 is the brightest.
+    Hour value is written to the column 0 and 1,
     minute value is written to the column 3 and 4.
-    The least significant bits are written to the row 4 and the most 
+    The least significant bits are written to the row 4 and the most
     significant bits to the row 1. Row 0 is unused, so as the column 2.
     """
     h_tens, h_ones = split_to_digits(hours)
@@ -68,17 +68,17 @@ def draw():
 
 while True:
     # this is an endless loop where all the computation happens
-    
+
     draw()
     # stepper button handling
     if button_a.was_pressed():
         hours += 1
     if button_b.was_pressed():
         minutes += 1
-    
+
     # increasing time variables
     # N.B.: the cycle is 100 ms so "seconds" counting tenfold faster
-    # therefore it has to count to 600 instead of 60. 
+    # therefore it has to count to 600 instead of 60.
     if seconds == 600:
         seconds = 0
         minutes += 1
