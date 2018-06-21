@@ -36,6 +36,7 @@ while True:
     # therefore it has to count to 300 to step a minute.
     if partials == 300:
         time += 0b0000000000000001
+        partials = 0
         needs_to_redraw = True
 
     # increasing time variables
