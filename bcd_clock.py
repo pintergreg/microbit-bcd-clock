@@ -7,7 +7,7 @@ partials = 0
 
 def draw():
     # s = format(time, "016b").replace("1", "8")
-    s = "{0:0>16b}".format(time).replace("1", "8")
+    s = "{0:0>16b}".format(time).replace("1", "5")
 # https://microbit-micropython.readthedocs.io/en/latest/tutorials/images.html
     # display.show(Image("0%s:0%s:00000:0%s:0%s" % (s[0:4], s[4:8], s[8:12], s[12:16])))
     a = "00000:0%s0%s%s:0%s0%s%s:%s%s0%s%s:%s%s0%s%s" %\
