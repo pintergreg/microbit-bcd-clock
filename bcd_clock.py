@@ -1,69 +1,21 @@
 from microbit import *
 
-# initial values
-hours = 12
-minutes = 0
-seconds = 0
-
-
-def split_to_digits(n):
-    """
-    Splits a decimal number to two digits and returns it as a tuple.
-    N.B.: this function does not check whether the input is a
-    two-digit decimal number.
-    """
-    return n // 10, n % 10
-
-
-def to_binary(n):
-    """
-    Convert a decimal number to a four digit binary number
-    represented by a four element array.
-    For example input is 7, then the output is [0, 1, 1, 1].
-    N.B.: this function does not check whether the input fits
-    to the four-digit representation, so it is at most sixteen.
-    """
-    b4 = n // 8
-    l1 = n % 8
-    b3 = l1 // 4
-    l2 = l1 % 4
-    b2 = l2 // 2
-    l3 = l2 % 2
-    b1 = l3 % 2
-    return [b4, b3, b2, b1]
+# initial time value as a binary number
+time = 0b0001001000000000
+partials = 0
 
 
 def draw():
-    """
-    Sets the LEDs to draw the BCD digits.
-
-    It uses the four four-element array representing the binary number
-    and sets the LED brightness. It can be specified from 0 to 9, where
-    0 means off the 9 is the brightest.
-    Hour value is written to the column 0 and 1,
-    minute value is written to the column 3 and 4.
-    The least significant bits are written to the row 4 and the most
-    significant bits to the row 1. Row 0 is unused, so as the column 2.
-    """
-    h_tens, h_ones = split_to_digits(hours)
-    m_tens, m_ones = split_to_digits(minutes)
-    for i in range(4):
-        if to_binary(h_tens)[i] == 1:
-            display.set_pixel(0, i + 1, 8)
-        else:
-            display.set_pixel(0, i + 1, 0)
-        if to_binary(h_ones)[i] == 1:
-            display.set_pixel(1, i + 1, 8)
-        else:
-            display.set_pixel(1, i + 1, 0)
-        if to_binary(m_tens)[i] == 1:
-            display.set_pixel(3, i + 1, 8)
-        else:
-            display.set_pixel(3, i + 1, 0)
-        if to_binary(m_ones)[i] == 1:
-            display.set_pixel(4, i + 1, 8)
-        else:
-            display.set_pixel(4, i + 1, 0)
+    # s = format(time, "016b").replace("1", "8")
+    s = "{0:0>16b}".format(time).replace("1", "8")
+# https://microbit-micropython.readthedocs.io/en/latest/tutorials/images.html
+    # display.show(Image("0%s:0%s:00000:0%s:0%s" % (s[0:4], s[4:8], s[8:12], s[12:16])))
+    a = "00000:0%s0%s%s:0%s0%s%s:%s%s0%s%s:%s%s0%s%s" %\
+        (s[4], s[8], s[12],
+         s[5], s[9], s[13],
+         s[2], s[6], s[10], s[14],
+         s[3], s[7], s[11], s[15])
+    display.show(Image(a))
 
 
 while True:
@@ -72,23 +24,29 @@ while True:
     draw()
     # stepper button handling
     if button_a.was_pressed():
-        hours += 1
+        time += 0b0000000100000000
     if button_b.was_pressed():
-        minutes += 1
+        time += 0b0000000000000001
 
+    if partials == 300:
+        time += 0b0000000000000001
     # increasing time variables
     # N.B.: the cycle is 100 ms so "seconds" counting tenfold faster
     # therefore it has to count to 600 instead of 60.
-    if seconds == 600:
-        seconds = 0
-        minutes += 1
-    if minutes == 60:
-        minutes = 0
-        hours += 1
-    if hours == 24:
-        hours = 0
+    if time & 0b0000000000001111 == 10:
+        time = time & 0b1111111111110000
+        time += 0b0000000000010000
+    if (time & 0b0000000011110000) >> 4 == 6:
+        time = time & 0b1111111100001111
+        time += 0b0000000100000000
+    if (time & 0b0000111100000000) >> 8 == 10:
+        time = time & 0b1111000011111111
+        time += 0b0001000000000000
+    if (time & 0b1111000000000000) >> 12 == 2 and\
+       (time & 0b0000111100000000) >> 8 == 4:
+        time = time & 0b0000000011111111
 
-    # increase second at every cycle
-    seconds += 1
-    # pause the cycle for 100 ms
-    sleep(100)
+    partials += 1
+
+    # pause the cycle for 200 ms
+    sleep(200)
